@@ -1,0 +1,23 @@
+# Unity自动生成目录
+Library/
+Temp/
+Logs/
+obj/
+Build/
+Builds/
+UserSettings/
+# 包缓存
+Packages/*/Logs/
+Packages/*/obj/
+# IDE文件
+.idea/
+.vs/
+*.sdf
+*.suo
+*.opensdf
+*.userprefs
+*.csproj
+*.sln
+# 系统文件
+.DS_Store
+Thumbs.db
