@@ -79,31 +79,21 @@ public class DataBaseManger :ScriptableObject
         }
 
     }
-private static bool Find(string key,string str,int count1)
+private static bool Find(string key,string str)
     {
-        int count = count1;
         int count2 = 0;
-        if (count1<key.Length-str.Length) {
-            for (int i = count1; i < count1+str.Length; i++)
+        for (int count=0;count<key.Length-str.Length;count++) { 
+            for (int i = count; i < count+str.Length; i++)
             {
                 if (key[i] == str[i] && count2 == str.Length - 1)
                 {
                     return true;
                 }
-                else
-                {
-                    if (count2 == str.Length - 1)
-                    {
-                        Find(key, str, count + 1);
-                    }
-                }
+                
                 count2++;
             }
         }
-        else
-        {
-            return false;
-        }
+       
         return false;
 
     }
@@ -113,7 +103,7 @@ public static List<int> GetBuildingEnergys(string str)
         
         foreach(string keys in buildingenergy.Keys)
         {
-            if (Find(keys,str,0))
+            if (Find(keys,str))
             {
                 energys.Add(buildingenergy[keys]);
             }
@@ -126,7 +116,7 @@ public static List<Vector3> GetEnermyPositions(string str)
         
         foreach(string keys in enermyposition.Keys)
         {
-            if (Find(keys,str,0))
+            if (Find(keys,str))
             {
                 positions.Add(enermyposition[keys]);
             }
@@ -139,7 +129,7 @@ public static List<Vector3> GetEnermyPositions(string str)
 
         foreach (string keys in buildingposition.Keys)
         {
-            if (Find(keys, str, 0))
+            if (Find(keys, str))
             {
                 positions.Add(buildingposition[keys]);
             }
