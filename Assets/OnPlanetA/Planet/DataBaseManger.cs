@@ -85,12 +85,12 @@ private static bool Find(string key,string str)
         for (int count=0;count<key.Length-str.Length;count++) { 
             for (int i = count; i < count+str.Length; i++)
             {
-                if (key[i] == str[i] && count2 == str.Length - 1)
+                if (key[i] == str[i-count]&&count2==str.Length)
                 {
                     return true;
                 }
-                
                 count2++;
+                
             }
         }
        
@@ -144,6 +144,45 @@ public static List<Vector3> GetEnermyPositions(string str)
         buildingenergy.Clear();
         
     }
+    public static bool ModifyBuildingEnergy(string key,int newenergy)
+    {
+        if (buildingenergy.ContainsKey(key))
+        {
+            buildingenergy[key] = newenergy;
+            return true;
+        }
+        else
+        {
+            Debug.LogError("No such key in building energy database");
+            return false;
+        }
+    }
+    public static bool ModifyBuildingPosition(string key,Vector3 newposition)
+    {
+        if (buildingposition.ContainsKey(key))
+        {
+            buildingposition[key] = newposition;
+            return true;
+        }
+        else
+        {
+            Debug.LogError("No such key in building position database");
+            return false;
+        }
+    }
+    public static bool ModifyEnermyPosition(string key,Vector3 newposition)
+    {
+        if (enermyposition.ContainsKey(key))
+        {
+            enermyposition[key] = newposition;
+            return true;
+        }
+        else
+        {
+            Debug.LogError("No such key in enermy position database");
+            return false;
+        }
+    }
     public static void SaveDataToJSONFile()
     {
         try
@@ -157,7 +196,7 @@ public static List<Vector3> GetEnermyPositions(string str)
             Debug.LogError("Save Data Failed:" + e.Message);
         }
     }
-    public  static void LoadDataFromJSONFile()
+    public  static DataBaseManger LoadDataFromJSONFile()
     {
         try
         {
@@ -165,16 +204,20 @@ public static List<Vector3> GetEnermyPositions(string str)
             if (File.Exists(loadPath))
             {
                 string jsonData = File.ReadAllText(loadPath);
-                JsonUtility.FromJsonOverwrite(jsonData, new DataBaseManger());
+                DataBaseManger data=new DataBaseManger();
+                JsonUtility.FromJsonOverwrite(jsonData, data);
+                return data;
             }
             else
             {
                 Debug.LogWarning("Load Data Failed: File does not exist.");
+                return null;
             }
         }
         catch (System.Exception e)
-        {
+        { 
             Debug.LogError("Load Data Failed:" + e.Message);
+            return null;
         }
     }
 }
