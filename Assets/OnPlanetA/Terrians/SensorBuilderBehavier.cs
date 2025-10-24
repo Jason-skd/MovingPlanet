@@ -11,6 +11,7 @@ public class SensorBuilderBehavier : MonoBehaviour
     private FixedJoint fixedJoint;
     private Rigidbody rigidbody;
     private float breakforce = Mathf.Infinity;
+    public GameObject onesensor;
     private float breaktorque = Mathf.Infinity;
     public void isPut()
     {
@@ -24,14 +25,14 @@ public class SensorBuilderBehavier : MonoBehaviour
         Vector3 rayStart1 = position + Vector3.right * 0.1f;
         Vector3 rayStart3 = position + Vector3.forward * 0.1f;
         Vector3 rayStart4 = position + Vector3.left * 0.1f;
-        GameObject onesensor = new GameObject("SensorBuilder");
+       
         Physics.SphereCast(rayStart1, 1f, Vector3.right, out hit1);
         Physics.SphereCast(rayStart3, 1f, Vector3.forward, out hit2);
         Physics.SphereCast(rayStart4, 1f, Vector3.left, out hit3);
             if (if_put) {
                 if (hit1.collider.CompareTag("Player")||hit2.collider.CompareTag("Player")||hit3.collider.CompareTag("Player")){
-                    onesensor.SetActive(true);
-                    Instantiate(onesensor);
+                GameObject.Instantiate(onesensor);
+                onesensor.SetActive(true); 
                     onesensor.transform.position = position;
                 }
             }
