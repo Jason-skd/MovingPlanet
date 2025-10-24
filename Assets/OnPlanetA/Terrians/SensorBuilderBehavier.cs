@@ -7,9 +7,7 @@ public class SensorBuilderBehavier : MonoBehaviour
     bool if_put = false;
     private bool is_ground;
     private GameObject[] sensorbuilding;
-    private LayerMask layerMask = 1;
     private int energyvalue = 0;
-    private float rastcasthitdistance = 0.2f;
     private FixedJoint fixedJoint;
     private Rigidbody rigidbody;
     private float breakforce = Mathf.Infinity;
