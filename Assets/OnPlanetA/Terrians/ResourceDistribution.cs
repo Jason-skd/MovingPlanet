@@ -19,9 +19,9 @@ public class ResourceDistribution : MonoBehaviour
     void Start()
     {
         List<Vector3> resourcePositions = new List<Vector3>();
-        for (int i=0;i<=3;i++)
+        for (int i=0;i<3;i++)
         {
-            for (int j=0;j<=3;j++)
+            for (int j=0;j<3;j++)
             {
                 resourcePositions.Add(new Vector3(-i*1000,0,-j*1000));
             }
