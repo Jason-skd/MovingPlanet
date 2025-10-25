@@ -5,6 +5,7 @@ using UnityEngine;
 public class SensorBuilderBehavier : MonoBehaviour
 {
     bool if_put = false;
+    [SerializeField]
     private bool is_ground;
     private GameObject[] sensorbuilding;
     private int energyvalue = 0;
@@ -13,19 +14,20 @@ public class SensorBuilderBehavier : MonoBehaviour
     private float breakforce = Mathf.Infinity;
     public GameObject onesensor;
     private float breaktorque = Mathf.Infinity;
-    public void isPut()
+    private int putcount = 0;
+    public void IsPut()
     {
         if_put = true;
     }
-   public void put(Vector3 position)
+   public void Put(Vector3 position)
     {
+        
         RaycastHit hit1;
         RaycastHit hit2;
         RaycastHit hit3;
-        Vector3 rayStart1 = position + Vector3.right * 0.1f;
-        Vector3 rayStart3 = position + Vector3.forward * 0.1f;
-        Vector3 rayStart4 = position + Vector3.left * 0.1f;
-       
+        Vector3 rayStart1 = position + Vector3.right * 3.0f;
+        Vector3 rayStart3 = position + Vector3.forward * 3.0f;
+        Vector3 rayStart4 = position + Vector3.left * 3.0f;
         Physics.SphereCast(rayStart1, 1f, Vector3.right, out hit1);
         Physics.SphereCast(rayStart3, 1f, Vector3.forward, out hit2);
         Physics.SphereCast(rayStart4, 1f, Vector3.left, out hit3);
@@ -33,10 +35,11 @@ public class SensorBuilderBehavier : MonoBehaviour
                 if (hit1.collider.CompareTag("Player")||hit2.collider.CompareTag("Player")||hit3.collider.CompareTag("Player")){
                 GameObject.Instantiate(onesensor);
                 onesensor.SetActive(true); 
-                    onesensor.transform.position = position;
-                }
+                onesensor.transform.position = position;
+                DataBaseManger.RegisterBuildingData("SensorBuilder"+putcount, position, energyvalue);
             }
-        
+            }
+        putcount += 1;
     }
    private void AlignToGrand(){
         foreach (GameObject sensor in sensorbuilding)
@@ -55,8 +58,6 @@ public class SensorBuilderBehavier : MonoBehaviour
                 {
                     rigidbody = sensor.AddComponent<Rigidbody>();
                     fixedJoint = sensor.AddComponent<FixedJoint>();
-
-
                 }
                 else
                 {
@@ -93,6 +94,7 @@ public class SensorBuilderBehavier : MonoBehaviour
                 else
                 {
                     sensor.AddComponent<Rigidbody>();
+                    rigidbody.AddForce(Physics.gravity * rigidbody.mass);
                 }
             }
         }
