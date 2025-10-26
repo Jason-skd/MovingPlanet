@@ -43,7 +43,6 @@ public class PlayerControllerRigidbody : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 移动处理在 FixedUpdate 中进行，因为涉及物理
         HandleMovement();
     }
 
