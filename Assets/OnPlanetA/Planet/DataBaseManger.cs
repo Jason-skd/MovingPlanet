@@ -11,8 +11,6 @@ public class DataBaseManger :ScriptableObject
    private static Dictionary<string,Vector3> enermyposition=new Dictionary<string,Vector3>();
    private static Dictionary<string, Vector3> buildingposition = new Dictionary<string, Vector3>();
    private static Dictionary<string,int> buildingenergy= new Dictionary<string,int>();
- 
- 
   public static void RegisterBuildingData(string name,Vector3 position,int energy)
     {
         
@@ -79,7 +77,43 @@ public class DataBaseManger :ScriptableObject
         }
 
     }
-private static bool Find(string key,string str)
+    public static string GetKeyByBuildingPosition(Vector3 position)
+    {
+        foreach (KeyValuePair<string, Vector3> pair in buildingposition)
+        {
+            if (pair.Value == position)
+            {
+                return pair.Key;
+            }
+        }
+        Debug.LogError("No such position in building position database");
+        return null;
+    }
+    public static string GetKeyByEnermyPosition(Vector3 position)
+    {
+        foreach (KeyValuePair<string, Vector3> pair in enermyposition)
+        {
+            if (pair.Value == position)
+            {
+                return pair.Key;
+            }
+        }
+        Debug.LogError("No such position in enermy position database");
+        return null;
+    }
+    public static string GetKeyByBuildingEnergy(int energy)
+    {
+        foreach (KeyValuePair<string, int> pair in buildingenergy)
+        {
+            if (pair.Value == energy)
+            {
+                return pair.Key;
+            }
+        }
+        Debug.LogError("No such energy in building energy database");
+        return null;
+    }
+    private static bool Find(string key,string str)
     {
         int count2 = 0;
         for (int count=0;count<key.Length-str.Length;count++) { 
@@ -93,9 +127,8 @@ private static bool Find(string key,string str)
                 
             }
         }
-       
+        Debug.LogError("No such key in database");
         return false;
-
     }
 public static List<int> GetBuildingEnergys(string str)
     {

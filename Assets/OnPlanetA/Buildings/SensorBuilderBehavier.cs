@@ -14,7 +14,7 @@ public class SensorBuilderBehavier : MonoBehaviour
     private float breakforce = Mathf.Infinity;
     public GameObject onesensor;
     private float breaktorque = Mathf.Infinity;
-    private int putcount = 0;
+    private static int putcount = 0;
     public void IsPut()
     {
         if_put = true;
@@ -33,9 +33,9 @@ public class SensorBuilderBehavier : MonoBehaviour
         Physics.SphereCast(rayStart4, 1f, Vector3.left, out hit3);
             if (if_put) {
                 if (hit1.collider.CompareTag("Player")||hit2.collider.CompareTag("Player")||hit3.collider.CompareTag("Player")){
-                GameObject.Instantiate(onesensor);
-                onesensor.SetActive(true); 
-                onesensor.transform.position = position;
+               GameObject instance= GameObject.Instantiate(onesensor);
+                instance.SetActive(true); 
+                instance.transform.position = position;
                 DataBaseManger.RegisterBuildingData("SensorBuilder"+putcount, position, energyvalue);
             }
             }
@@ -75,7 +75,7 @@ public class SensorBuilderBehavier : MonoBehaviour
                 }
             }
             sensor.transform.position = hit.point;
-            sensor.transform.rotation = Quaternion.FromToRotation(sensorbuilding[0].transform.position, hit.normal) * sensorbuilding[0].transform.rotation;
+            sensor.transform.rotation = Quaternion.FromToRotation(sensor.transform.position, hit.normal) * sensor.transform.rotation;
         }
     }
 
@@ -100,9 +100,16 @@ public class SensorBuilderBehavier : MonoBehaviour
         }
     }
     //能量获取
-   public void SetEnergy(int value)
+   private void SetEnergy()
     {
-        energyvalue = value; 
+      Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.0f);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.CompareTag("Wire"))
+            {
+                energyvalue = hitCollider.gameObject.GetComponent<WireBehaviourScript>().GetEnergy();
+            }
+        }
     }
     public List<Vector3> DetectEnemyPositions()
     {
@@ -151,7 +158,7 @@ public class SensorBuilderBehavier : MonoBehaviour
     {
         AlignToGrand();
         ApplyGravty();
-       
+        SetEnergy();
     }
     private void Awake()
     {
